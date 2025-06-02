@@ -1,13 +1,27 @@
 package com.example.ligaspanyolapp;
 
-public class Team {
 
-    private String strTeam;
-    private String strStadium;
-    private String strBadge;
+    import com.google.gson.annotations.SerializedName;
 
+    public class Team {
+        @SerializedName("idTeam")
+        private String idTeam;
 
-    public String getStrTeam() { return strTeam; }
-    public String getStrStadium() { return strStadium; }
-    public String getStrTeamBadge() { return strBadge; }
-}
+        @SerializedName("strTeam")
+        private String strTeam;
+
+        @SerializedName("strBadge")
+        private String strTeamBadge;
+
+        public String getIdTeam() {
+            return idTeam;
+        }
+
+        public String getStrTeam() {
+            return strTeam;
+        }
+
+        public String getStrTeamBadge() {
+            return strTeamBadge;
+        }
+    }

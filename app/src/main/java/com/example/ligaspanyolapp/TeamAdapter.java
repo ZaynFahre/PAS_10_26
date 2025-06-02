@@ -1,59 +1,60 @@
 package com.example.ligaspanyolapp;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import java.util.List;
 
-// Adapter untuk menampilkan data tim di RecyclerView
 public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder> {
 
-    private List<Team> teamList;
+    private Context context;
+    private List<Team> teams;
 
-    public TeamAdapter(List<Team> teamList) {
-        this.teamList = teamList;
+    public TeamAdapter(Context context, List<Team> teams) {
+        this.context = context;
+        this.teams = teams;
     }
 
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
     @Override
-    public TeamViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team, parent, false);
+    public TeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_team, parent, false);
         return new TeamViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(TeamViewHolder holder, int position) {
-        Team team = teamList.get(position);
-
-        // Set nama tim dan stadion
-        holder.textTeamName.setText(team.getStrTeam());
-        holder.textStadium.setText(team.getStrStadium());
-
-        // Load badge tim dengan Glide
-        Glide.with(holder.itemView.getContext())
+    public void onBindViewHolder(@NonNull TeamViewHolder holder, int position) {
+        Team team = teams.get(position);
+        holder.teamName.setText(team.getStrTeam());
+        Glide.with(context)
                 .load(team.getStrTeamBadge())
-                .into(holder.rvBadge);
+                .into(holder.teamBadge);
     }
 
     @Override
     public int getItemCount() {
-        return teamList.size();
+        return (teams != null) ? teams.size() : 0;
     }
 
-    // ViewHolder = class yang pegang referensi UI tiap item
     public static class TeamViewHolder extends RecyclerView.ViewHolder {
-        TextView textTeamName, textStadium;
-        ImageView rvBadge;
+        TextView teamName;
+        ImageView teamBadge;
 
-        public TeamViewHolder(View itemView) {
+        public TeamViewHolder(@NonNull View itemView) {
             super(itemView);
-            textTeamName = itemView.findViewById(R.id.textTeamName);
-            textStadium = itemView.findViewById(R.id.textStadium);
-            rvBadge = itemView.findViewById(R.id.rvBadge);
+            teamName = itemView.findViewById(R.id.tvTeamName);
+            teamBadge = itemView.findViewById(R.id.ivTeamBadge);
         }
     }
 }
-
