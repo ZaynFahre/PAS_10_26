@@ -1,12 +1,15 @@
 package com.example.ligaspanyolapp;
 
+import com.example.LigaSpayolApp.Team;
+
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class TeamResponse {
-    private List<Team> teams;
+    @SerializedName("teams")
+    private List<com.example.ligaspanyolapp.Team> teams;
 
-    public List<Team> getTeams() {
+    public List<com.example.ligaspanyolapp.Team> getTeams() {
         return teams;
     }
 }
-

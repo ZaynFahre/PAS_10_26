@@ -1,47 +1,47 @@
 package com.example.ligaspanyolapp;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textView;  // ini tempat tampilan hasilnya
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        textView = new TextView(this);
-        textView.setTextSize(18);
-        setContentView(textView); // tampilkan TextView ke layar
-    }
+        bottomNavigationView = findViewById(R.id.bottom_+navigation);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // hubungkan menu dari XML
-        getMenuInflater().inflate(R.menu.bottom_nav_mrnu, menu);
-        return true;
-    }
+        // Load HomeFragment awal
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, new HomeFragment())
+                .commit();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // ketika menu dipilih
-        int id = item.getItemId();
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment fragment = null;
+            int itemId = item.getItemId();
 
-        if (id == R.id.menu_liga) {
-            textView.setText("⚽ Liga Spanyol: Real Madrid, Barcelona, dll.");
-            return true;
-        } else if (id == R.id.menu_api) {
-            textView.setText("📡 API selain Liga Inggris: Bundesliga, Serie A.");
-            return true;
-        } else if (id == R.id.menu_profil) {
-            textView.setText("👦 Nama: Fajar Nugraha\n👩 Teman: Siti, Dimas\n🏫 Kelas: XI RPL 1");
-            return true;
-        }
+            if (itemId == R.id.nav_home) {
+                fragment = new HomeFragment();
+            } else if (itemId == R.id.nav_dashboard) {
+                fragment = new DashboardFragment();
+            } else if (itemId == R.id.nav_profile) {
+                fragment = new ProfileFragment();
+            }
 
-        return super.onOptionsItemSelected(item);
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, fragment)
+                        .commit();
+                return true;
+            }
+            return false;
+        });
     }
 }
